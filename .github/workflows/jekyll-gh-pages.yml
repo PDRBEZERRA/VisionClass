@@ -33,7 +33,7 @@ jobs:
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
-          public_base_path: /VisionClass/
+          public_base_path: /
           source: ./
           destination: ./_site
       - name: Upload artifact
