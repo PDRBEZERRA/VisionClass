@@ -12,11 +12,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const emojiScale = ['😢', '😐', '😊', '😃', '🤩'];
 const criterios = ['Assiduidade', 'Participação', 'Responsabilidade', 'Sociabilidade'];
 
 export default function Carometro() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [turmaId, setTurmaId] = useState('1');
   const [selectedAluno, setSelectedAluno] = useState<typeof mockAlunos[0] | null>(null);
   const [avaliacoes, setAvaliacoes] = useState({
@@ -26,6 +28,7 @@ export default function Carometro() {
     sociabilidade: 3,
   });
   const [observacoes, setObservacoes] = useState('');
+  const isMobile = useIsMobile();
 
   const alunos = mockAlunos.filter(a => a.turmaId === turmaId);
   const turma = mockTurmas.find(t => t.id === turmaId);
@@ -38,20 +41,20 @@ export default function Carometro() {
 
   return (
     <div className="flex min-h-screen bg-background">
-      <Sidebar userRole="professor" />
+      <Sidebar userRole="professor" open={sidebarOpen} onOpenChange={setSidebarOpen} />
       
-      <div className="flex-1 flex flex-col">
-        <Header userName="Prof. Maria Silva" />
+      <div className="flex-1 flex flex-col min-w-0">
+        <Header userName="Prof. Maria Silva" onMenuClick={() => setSidebarOpen(true)} />
         
-        <main className="flex-1 p-6 space-y-6">
-          <div className="flex items-center justify-between">
+        <main className="flex-1 p-3 sm:p-6 space-y-4 sm:space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
             <div>
-              <h1 className="text-3xl font-bold">Carômetro</h1>
-              <p className="text-muted-foreground">Avaliação comportamental da turma</p>
+              <h1 className="text-2xl sm:text-3xl font-bold">Carômetro</h1>
+              <p className="text-sm text-muted-foreground">Avaliação comportamental da turma</p>
             </div>
-            <div className="flex gap-3">
+            <div className="flex flex-wrap gap-2 sm:gap-3">
               <Select value={turmaId} onValueChange={setTurmaId}>
-                <SelectTrigger className="w-[280px]">
+                <SelectTrigger className="w-full sm:w-[200px] md:w-[280px]">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="bg-card">
@@ -60,47 +63,47 @@ export default function Carometro() {
                   ))}
                 </SelectContent>
               </Select>
-              <Button variant="outline">
+              <Button variant="outline" size="sm" className="flex-1 sm:flex-none">
                 <Filter className="w-4 h-4 mr-2" />
-                Filtros
+                <span className="hidden sm:inline">Filtros</span>
               </Button>
-              <Button variant="outline">
+              <Button variant="outline" size="sm" className="flex-1 sm:flex-none">
                 <Printer className="w-4 h-4 mr-2" />
-                Imprimir
+                <span className="hidden sm:inline">Imprimir</span>
               </Button>
             </div>
           </div>
 
           <Card>
-            <CardContent className="p-6">
-              <div className="mb-4 flex items-center justify-between">
+            <CardContent className="p-3 sm:p-6">
+              <div className="mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-0">
                 <div>
-                  <h3 className="font-semibold text-lg">{turma?.nome}</h3>
-                  <p className="text-sm text-muted-foreground">
+                  <h3 className="font-semibold text-base sm:text-lg">{turma?.nome}</h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
                     {alunos.length} alunos • {turma?.periodo} • {turma?.ano}
                   </p>
                 </div>
-                <Badge variant="secondary" className="text-sm">
+                <Badge variant="secondary" className="text-xs sm:text-sm w-fit">
                   Data: {new Date().toLocaleDateString('pt-BR')}
                 </Badge>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-3 sm:gap-4">
                 {alunos.map((aluno) => (
                   <button
                     key={aluno.id}
                     onClick={() => setSelectedAluno(aluno)}
-                    className="group flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-muted/50 transition-all hover-lift"
+                    className="group flex flex-col items-center gap-1.5 sm:gap-2 p-2 sm:p-3 rounded-lg hover:bg-muted/50 transition-all hover-lift"
                   >
-                    <Avatar className="w-24 h-24 ring-2 ring-transparent group-hover:ring-primary transition-all">
+                    <Avatar className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 ring-2 ring-transparent group-hover:ring-primary transition-all">
                       <AvatarImage src={aluno.foto} alt={aluno.nome} />
-                      <AvatarFallback>{aluno.nome.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                      <AvatarFallback className="text-xs sm:text-sm">{aluno.nome.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                     </Avatar>
-                    <div className="text-center">
-                      <p className="text-sm font-medium leading-tight">{aluno.nome}</p>
-                      <p className="text-xs text-muted-foreground">{aluno.matricula}</p>
+                    <div className="text-center w-full">
+                      <p className="text-xs sm:text-sm font-medium leading-tight line-clamp-2">{aluno.nome}</p>
+                      <p className="text-[10px] sm:text-xs text-muted-foreground">{aluno.matricula}</p>
                     </div>
-                    <div className="w-3 h-3 rounded-full bg-secondary" title="Presente" />
+                    <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-secondary" title="Presente" />
                   </button>
                 ))}
               </div>
@@ -111,7 +114,7 @@ export default function Carometro() {
 
       {/* Modal de Avaliação */}
       <Dialog open={!!selectedAluno} onOpenChange={(open) => !open && setSelectedAluno(null)}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto w-[95vw] sm:w-full p-4 sm:p-6">
           <DialogHeader>
             <DialogTitle>Avaliação Individual</DialogTitle>
             <DialogDescription>
@@ -126,33 +129,33 @@ export default function Carometro() {
                 <TabsTrigger value="historico">Histórico</TabsTrigger>
               </TabsList>
 
-              <TabsContent value="avaliar" className="space-y-6">
-                <div className="flex items-center gap-4 p-4 bg-muted/30 rounded-lg">
-                  <Avatar className="w-20 h-20 ring-2 ring-primary">
+              <TabsContent value="avaliar" className="space-y-4 sm:space-y-6">
+                <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-muted/30 rounded-lg">
+                  <Avatar className="w-16 h-16 sm:w-20 sm:h-20 ring-2 ring-primary shrink-0">
                     <AvatarImage src={selectedAluno.foto} />
                     <AvatarFallback>{selectedAluno.nome.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                   </Avatar>
-                  <div>
-                    <h3 className="text-xl font-semibold">{selectedAluno.nome}</h3>
-                    <p className="text-sm text-muted-foreground">
+                  <div className="text-center sm:text-left">
+                    <h3 className="text-lg sm:text-xl font-semibold">{selectedAluno.nome}</h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground">
                       Matrícula: {selectedAluno.matricula} • {turma?.nome}
                     </p>
                   </div>
                 </div>
 
-                <div className="space-y-6">
+                <div className="space-y-4 sm:space-y-6">
                   {criterios.map((criterio, idx) => {
                     const key = criterio.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') as keyof typeof avaliacoes;
                     return (
-                      <div key={criterio} className="space-y-3">
-                        <Label className="text-base font-semibold">{criterio}</Label>
-                        <div className="flex justify-between items-center gap-2">
+                      <div key={criterio} className="space-y-2 sm:space-y-3">
+                        <Label className="text-sm sm:text-base font-semibold">{criterio}</Label>
+                        <div className="flex justify-between items-center gap-1 sm:gap-2">
                           {emojiScale.map((emoji, emojiIdx) => (
                             <button
                               key={emojiIdx}
                               type="button"
                               onClick={() => setAvaliacoes(prev => ({ ...prev, [key]: emojiIdx + 1 }))}
-                              className={`flex-1 text-4xl p-4 rounded-lg transition-all ${
+                              className={`flex-1 text-2xl sm:text-3xl md:text-4xl p-2 sm:p-3 md:p-4 rounded-lg transition-all ${
                                 avaliacoes[key] === emojiIdx + 1
                                   ? 'bg-primary/20 scale-110 ring-2 ring-primary'
                                   : 'hover:bg-muted/50 hover:scale-105'
@@ -167,21 +170,22 @@ export default function Carometro() {
                   })}
 
                   <div className="space-y-2">
-                    <Label>Observações</Label>
+                    <Label className="text-sm sm:text-base">Observações</Label>
                     <Textarea
                       placeholder="Adicione observações sobre o comportamento do aluno..."
                       value={observacoes}
                       onChange={(e) => setObservacoes(e.target.value)}
-                      rows={4}
+                      rows={isMobile ? 3 : 4}
+                      className="text-sm sm:text-base"
                     />
                   </div>
                 </div>
 
-                <div className="flex gap-3 justify-end pt-4 border-t">
-                  <Button variant="outline" onClick={() => setSelectedAluno(null)}>
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-end pt-4 border-t">
+                  <Button variant="outline" onClick={() => setSelectedAluno(null)} className="w-full sm:w-auto">
                     Cancelar
                   </Button>
-                  <Button onClick={handleSaveAvaliacao} className="btn-primary-gradient">
+                  <Button onClick={handleSaveAvaliacao} className="btn-primary-gradient w-full sm:w-auto">
                     Salvar Avaliação
                   </Button>
                 </div>

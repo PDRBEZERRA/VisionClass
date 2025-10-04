@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,29 +7,31 @@ import { Users, GraduationCap, FileText, TrendingUp, UserPlus, FolderPlus, Datab
 import { mockDashboardStats } from '@/lib/mockData';
 
 export default function DashboardAdmin() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const stats = mockDashboardStats;
 
   return (
     <div className="flex min-h-screen bg-background">
-      <Sidebar userRole="admin" />
+      <Sidebar userRole="admin" open={sidebarOpen} onOpenChange={setSidebarOpen} />
       
-      <div className="flex-1 flex flex-col">
-        <Header userName="Admin Sistema" />
+      <div className="flex-1 flex flex-col min-w-0">
+        <Header userName="Admin Sistema" onMenuClick={() => setSidebarOpen(true)} />
         
-        <main className="flex-1 p-6 space-y-6">
-          <div className="flex items-center justify-between">
+        <main className="flex-1 p-3 sm:p-6 space-y-4 sm:space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h1 className="text-3xl font-bold">Dashboard Administrativo</h1>
-              <p className="text-muted-foreground">Visão geral do sistema</p>
+              <h1 className="text-2xl sm:text-3xl font-bold">Dashboard Administrativo</h1>
+              <p className="text-sm text-muted-foreground">Visão geral do sistema</p>
             </div>
-            <Button className="btn-primary-gradient">
+            <Button className="btn-primary-gradient shrink-0" size="sm">
               <Database className="w-4 h-4 mr-2" />
-              Backup de Dados
+              <span className="hidden sm:inline">Backup de Dados</span>
+              <span className="sm:hidden">Backup</span>
             </Button>
           </div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
             <Card className="hover-lift cursor-pointer">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -37,7 +40,7 @@ export default function DashboardAdmin() {
                 <Users className="w-5 h-5 text-primary" />
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">{stats.totalAlunos}</div>
+                <div className="text-2xl sm:text-3xl font-bold">{stats.totalAlunos}</div>
                 <p className="text-xs text-muted-foreground mt-1">
                   <span className="text-secondary font-medium">+12%</span> vs. ano passado
                 </p>
@@ -52,7 +55,7 @@ export default function DashboardAdmin() {
                 <GraduationCap className="w-5 h-5 text-secondary" />
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">{stats.totalProfessores}</div>
+                <div className="text-2xl sm:text-3xl font-bold">{stats.totalProfessores}</div>
                 <p className="text-xs text-muted-foreground mt-1">
                   <span className="text-secondary font-medium">+3</span> este mês
                 </p>
@@ -67,7 +70,7 @@ export default function DashboardAdmin() {
                 <FolderPlus className="w-5 h-5 text-accent" />
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">{stats.turmasAtivas}</div>
+                <div className="text-2xl sm:text-3xl font-bold">{stats.turmasAtivas}</div>
                 <p className="text-xs text-muted-foreground mt-1">
                   Ano letivo 2025
                 </p>
@@ -82,7 +85,7 @@ export default function DashboardAdmin() {
                 <FileText className="w-5 h-5 text-primary-light" />
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">{stats.simuladosAtivos}</div>
+                <div className="text-2xl sm:text-3xl font-bold">{stats.simuladosAtivos}</div>
                 <p className="text-xs text-muted-foreground mt-1">
                   Em andamento
                 </p>
@@ -96,18 +99,18 @@ export default function DashboardAdmin() {
               <CardTitle>Ações Rápidas</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Button variant="outline" className="h-24 flex flex-col gap-2">
-                  <UserPlus className="w-6 h-6 text-primary" />
-                  <span>Cadastrar Usuário</span>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                <Button variant="outline" className="h-20 sm:h-24 flex flex-col gap-2 text-sm sm:text-base">
+                  <UserPlus className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+                  <span className="text-xs sm:text-sm">Cadastrar Usuário</span>
                 </Button>
-                <Button variant="outline" className="h-24 flex flex-col gap-2">
-                  <FolderPlus className="w-6 h-6 text-secondary" />
-                  <span>Criar Turma</span>
+                <Button variant="outline" className="h-20 sm:h-24 flex flex-col gap-2 text-sm sm:text-base">
+                  <FolderPlus className="w-5 h-5 sm:w-6 sm:h-6 text-secondary" />
+                  <span className="text-xs sm:text-sm">Criar Turma</span>
                 </Button>
-                <Button variant="outline" className="h-24 flex flex-col gap-2">
-                  <TrendingUp className="w-6 h-6 text-accent" />
-                  <span>Ver Relatórios</span>
+                <Button variant="outline" className="h-20 sm:h-24 flex flex-col gap-2 text-sm sm:text-base">
+                  <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />
+                  <span className="text-xs sm:text-sm">Ver Relatórios</span>
                 </Button>
               </div>
             </CardContent>
