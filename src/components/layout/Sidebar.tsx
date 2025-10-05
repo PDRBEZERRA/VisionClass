@@ -27,7 +27,7 @@ const menuItems = {
     { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard/admin' },
     { icon: Users, label: 'Usuários', path: '/usuarios' },
     { icon: GraduationCap, label: 'Turmas', path: '/turmas' },
-    { icon: BarChart3, label: 'Relatórios', path: '/relatorios' },
+    { icon: BarChart3, label: 'Relatórios', path: '/relatorios/admin' },
     { icon: Settings, label: 'Configurações', path: '/configuracoes' },
   ],
   professor: [

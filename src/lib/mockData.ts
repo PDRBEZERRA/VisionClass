@@ -69,7 +69,7 @@ export const mockAlunos: Aluno[] = Array.from({ length: 40 }, (_, i) => ({
   cpf: `${String(i + 1).padStart(3, '0')}.${String(i + 1).padStart(3, '0')}.${String(i + 1).padStart(3, '0')}-${String(i % 100).padStart(2, '0')}`
 }));
 
-export const mockQuestoes: Questao[] = [
+export const questoes: Questao[] = [
   {
     id: 'q1',
     disciplina: 'Matemática',
@@ -107,7 +107,7 @@ export const mockQuestoes: Questao[] = [
   }
 ];
 
-export const mockSimulados: Simulado[] = [
+export const simulados: Simulado[] = [
   {
     id: 's1',
     nome: 'Simulado ENEM - Matemática e Português',

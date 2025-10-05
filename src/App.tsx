@@ -8,6 +8,15 @@ import DashboardAdmin from "./pages/DashboardAdmin";
 import DashboardProfessor from "./pages/DashboardProfessor";
 import DashboardAluno from "./pages/DashboardAluno";
 import Carometro from "./pages/Carometro";
+import BancoQuestoes from "./pages/BancoQuestoes";
+import Simulados from "./pages/Simulados";
+import Usuarios from "./pages/Usuarios";
+import Relatorios from "./pages/Relatorios";
+import Configuracoes from "./pages/Configuracoes";
+import MeusSimulados from "./pages/MeusSimulados";
+import Desempenho from "./pages/Desempenho";
+import Perfil from "./pages/Perfil";
+import Turmas from "./pages/Turmas";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,15 +33,16 @@ const App = () => (
           <Route path="/dashboard/professor" element={<DashboardProfessor />} />
           <Route path="/dashboard/aluno" element={<DashboardAluno />} />
           <Route path="/carometro" element={<Carometro />} />
-          <Route path="/turmas" element={<Navigate to="/dashboard/professor" />} />
-          <Route path="/questoes" element={<Navigate to="/dashboard/professor" />} />
-          <Route path="/simulados" element={<Navigate to="/dashboard/professor" />} />
-          <Route path="/usuarios" element={<Navigate to="/dashboard/admin" />} />
-          <Route path="/relatorios" element={<Navigate to="/dashboard/admin" />} />
-          <Route path="/configuracoes" element={<Navigate to="/dashboard/admin" />} />
-          <Route path="/meus-simulados" element={<Navigate to="/dashboard/aluno" />} />
-          <Route path="/desempenho" element={<Navigate to="/dashboard/aluno" />} />
-          <Route path="/perfil" element={<Navigate to="/dashboard/aluno" />} />
+          <Route path="/turmas" element={<Turmas userRole="professor" />} />
+          <Route path="/questoes" element={<BancoQuestoes />} />
+          <Route path="/simulados" element={<Simulados />} />
+          <Route path="/usuarios" element={<Usuarios />} />
+          <Route path="/relatorios" element={<Relatorios userRole="professor" />} />
+          <Route path="/relatorios/admin" element={<Relatorios userRole="admin" />} />
+          <Route path="/configuracoes" element={<Configuracoes />} />
+          <Route path="/meus-simulados" element={<MeusSimulados />} />
+          <Route path="/desempenho" element={<Desempenho />} />
+          <Route path="/perfil" element={<Perfil userRole="aluno" />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
