@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from 'react-router-dom'; // 1. Importe o useNavigate
+import { NavLink, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   Users,
@@ -10,10 +10,10 @@ import {
   ClipboardList,
   UserCircle,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { UserRole } from '@/types';
-import { Sheet, SheetContent } from '@/components/ui/sheet';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { cn } from '../../lib/utils';
+import { UserRole } from '../../types';
+import { Sheet, SheetContent } from '../ui/sheet';
+import { useIsMobile } from '../../hooks/use-mobile';
 
 interface SidebarProps {
   userRole: UserRole;
@@ -36,26 +36,25 @@ const menuItems = {
     { icon: BookOpen, label: 'Banco de Questões', path: '/questoes' },
     { icon: FileText, label: 'Simulados', path: '/simulados' },
     { icon: BarChart3, label: 'Relatórios', path: '/relatorios' },
-    { icon: UserCircle, label: 'Perfil', path: '/perfil' },
+    { icon: UserCircle, label: 'Perfil', path: '/perfil/professor' }, // Rota corrigida
   ],
   aluno: [
     { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard/aluno' },
     { icon: ClipboardList, label: 'Meus Simulados', path: '/meus-simulados' },
     { icon: BarChart3, label: 'Meu Desempenho', path: '/desempenho' },
-    { icon: UserCircle, label: 'Perfil', path: '/perfil' },
+    { icon: UserCircle, label: 'Perfil', path: '/perfil/aluno' }, // Rota corrigida
   ],
 };
 
 export function Sidebar({ userRole, open = true, onOpenChange }: SidebarProps) {
   const items = menuItems[userRole];
   const isMobile = useIsMobile();
-  const navigate = useNavigate(); // 2. Inicialize o hook
+  const navigate = useNavigate();
 
-  // 3. Crie a função de logout
   const handleLogout = () => {
     localStorage.removeItem('userRole');
     localStorage.removeItem('userId');
-    navigate('/'); // Redireciona para a página de login
+    navigate('/');
   };
 
   const sidebarContent = (
@@ -90,7 +89,6 @@ export function Sidebar({ userRole, open = true, onOpenChange }: SidebarProps) {
       </nav>
 
       <div className="p-4 border-t border-border">
-        {/* 4. Adicione o onClick ao botão */}
         <button
           onClick={handleLogout}
           className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-destructive hover:bg-destructive/10 transition-all"
