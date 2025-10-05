@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // 1. Importe o useNavigate
 import { Sidebar } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,14 +10,20 @@ import { mockDashboardStats } from '@/lib/mockData';
 export default function DashboardAdmin() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const stats = mockDashboardStats;
+  const navigate = useNavigate(); // 2. Inicialize o hook
+
+  // 3. Crie funções para navegar para as páginas
+  const goToUsuarios = () => navigate('/usuarios');
+  const goToTurmas = () => navigate('/turmas');
+  const goToRelatorios = () => navigate('/relatorios/admin');
 
   return (
     <div className="flex min-h-screen bg-background">
       <Sidebar userRole="admin" open={sidebarOpen} onOpenChange={setSidebarOpen} />
-      
+
       <div className="flex-1 flex flex-col min-w-0">
         <Header userName="Admin Sistema" onMenuClick={() => setSidebarOpen(true)} />
-        
+
         <main className="flex-1 p-3 sm:p-6 space-y-4 sm:space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
@@ -100,15 +107,16 @@ export default function DashboardAdmin() {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-                <Button variant="outline" className="h-20 sm:h-24 flex flex-col gap-2 text-sm sm:text-base">
+                {/* 4. Adicione o onClick aos botões */}
+                <Button onClick={goToUsuarios} variant="outline" className="h-20 sm:h-24 flex flex-col gap-2 text-sm sm:text-base">
                   <UserPlus className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
                   <span className="text-xs sm:text-sm">Cadastrar Usuário</span>
                 </Button>
-                <Button variant="outline" className="h-20 sm:h-24 flex flex-col gap-2 text-sm sm:text-base">
+                <Button onClick={goToTurmas} variant="outline" className="h-20 sm:h-24 flex flex-col gap-2 text-sm sm:text-base">
                   <FolderPlus className="w-5 h-5 sm:w-6 sm:h-6 text-secondary" />
                   <span className="text-xs sm:text-sm">Criar Turma</span>
                 </Button>
-                <Button variant="outline" className="h-20 sm:h-24 flex flex-col gap-2 text-sm sm:text-base">
+                <Button onClick={goToRelatorios} variant="outline" className="h-20 sm:h-24 flex flex-col gap-2 text-sm sm:text-base">
                   <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />
                   <span className="text-xs sm:text-sm">Ver Relatórios</span>
                 </Button>
