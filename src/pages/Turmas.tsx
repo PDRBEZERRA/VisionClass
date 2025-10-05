@@ -1,14 +1,14 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Sidebar } from '../components/layout/Sidebar';
-import { Header } from '../components/layout/Header';
-import { Button } from '../components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
-import { Badge } from '../components/ui/badge';
-import { Users, Calendar, BookOpen } from 'lucide-react';
-import { mockTurmas } from '../lib/mockData';
-import { UserRole } from '../types';
-import { Progress } from '../components/ui/progress';
+import { Link, useNavigate } from 'react-router-dom';
+import { Sidebar } from '@/components/layout/Sidebar';
+import { Header } from '@/components/layout/Header';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Users, Calendar, BookOpen, Plus } from 'lucide-react';
+import { mockTurmas } from '@/lib/mockData';
+import { UserRole } from '@/types';
+import { Progress } from '@/components/ui/progress';
 
 export default function Turmas() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -31,9 +31,19 @@ export default function Turmas() {
         <Header userName={userName} onMenuClick={() => setSidebarOpen(true)} />
         <main className="flex-1 p-4 sm:p-6 lg:p-8">
           <div className="max-w-7xl mx-auto space-y-6">
-            <h1 className="text-2xl sm:text-3xl font-bold">
-              {userRole === 'admin' ? 'Todas as Turmas' : 'Minhas Turmas'}
-            </h1>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <h1 className="text-2xl sm:text-3xl font-bold">
+                {userRole === 'admin' ? 'Todas as Turmas' : 'Minhas Turmas'}
+              </h1>
+              {userRole === 'admin' && (
+                <Button asChild>
+                  <Link to="/turmas/novo">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Nova Turma
+                  </Link>
+                </Button>
+              )}
+            </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {mockTurmas.map((turma) => (
                 <Card key={turma.id} className="flex flex-col">
