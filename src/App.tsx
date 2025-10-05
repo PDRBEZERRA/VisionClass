@@ -15,6 +15,7 @@ import NovoUsuario from "@/pages/NovoUsuario";
 import EditarUsuario from "@/pages/EditarUsuario";
 import NovaTurma from "@/pages/NovaTurma";
 import Relatorios from "@/pages/Relatorios";
+import ExportarRelatorio from "@/pages/ExportarRelatorio"; // Importar novo componente
 import Configuracoes from "@/pages/Configuracoes";
 import MeusSimulados from "@/pages/MeusSimulados";
 import Desempenho from "@/pages/Desempenho";
@@ -45,8 +46,17 @@ const App = () => (
           <Route path="/usuarios" element={<Usuarios />} />
           <Route path="/usuarios/novo" element={<NovoUsuario />} />
           <Route path="/usuarios/editar/:id" element={<EditarUsuario />} />
+
+          {/* Rotas de Relatórios existentes */}
           <Route path="/relatorios" element={<Relatorios userRole="professor" />} />
           <Route path="/relatorios/admin" element={<Relatorios userRole="admin" />} />
+
+          {/* NOVAS Rotas de Exportação */}
+          {/* Professor */}
+          <Route path="/relatorios/exportar" element={<ExportarRelatorio userRole="professor" />} />
+          {/* Admin */}
+          <Route path="/relatorios/admin/exportar" element={<ExportarRelatorio userRole="admin" />} />
+
           <Route path="/configuracoes" element={<Configuracoes />} />
           <Route path="/meus-simulados" element={<MeusSimulados />} />
           <Route path="/desempenho" element={<Desempenho />} />
@@ -60,4 +70,3 @@ const App = () => (
 );
 
 export default App;
-

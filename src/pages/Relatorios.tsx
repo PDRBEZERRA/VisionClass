@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Importar useNavigate
 import { Sidebar } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
 import { Button } from '@/components/ui/button';
@@ -16,19 +17,27 @@ interface RelatoriosProps {
 
 export default function Relatorios({ userRole = 'professor' }: RelatoriosProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  
+  const navigate = useNavigate(); // Inicializar useNavigate
+
   const userName = userRole === 'admin' ? 'Admin Sistema' : 'Prof. João Silva';
+
+  // Lógica de navegação para a página de exportação
+  const handleExportClick = () => {
+    // Constrói o caminho de exportação baseado na rota atual.
+    const basePath = userRole === 'admin' ? '/relatorios/admin' : '/relatorios';
+    navigate(`${basePath}/exportar`);
+  };
 
   return (
     <div className="flex min-h-screen w-full bg-background">
       <Sidebar userRole={userRole} open={sidebarOpen} onOpenChange={setSidebarOpen} />
-      
+
       <div className="flex-1 flex flex-col">
-        <Header 
+        <Header
           userName={userName}
           onMenuClick={() => setSidebarOpen(true)}
         />
-        
+
         <main className="flex-1 p-4 sm:p-6 lg:p-8">
           <div className="max-w-7xl mx-auto space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -36,13 +45,14 @@ export default function Relatorios({ userRole = 'professor' }: RelatoriosProps) 
                 <h1 className="text-2xl sm:text-3xl font-bold">Relatórios</h1>
                 <p className="text-muted-foreground mt-1">Análises e estatísticas de desempenho</p>
               </div>
-              
-              <Button>
+
+              {/* Botão Exportar Relatório atualizado com a navegação */}
+              <Button onClick={handleExportClick} className="btn-primary-gradient">
                 <Download className="w-4 h-4 mr-2" />
                 Exportar Relatório
               </Button>
             </div>
-            
+
             <Card>
               <CardHeader>
                 <CardTitle>Filtros</CardTitle>
@@ -63,7 +73,7 @@ export default function Relatorios({ userRole = 'professor' }: RelatoriosProps) 
                       </SelectContent>
                     </Select>
                   </div>
-                  
+
                   <div>
                     <Label>Turma</Label>
                     <Select defaultValue="todas">
@@ -77,12 +87,12 @@ export default function Relatorios({ userRole = 'professor' }: RelatoriosProps) 
                       </SelectContent>
                     </Select>
                   </div>
-                  
+
                   <div>
                     <Label>Data Inicial</Label>
                     <Input type="date" />
                   </div>
-                  
+
                   <div>
                     <Label>Data Final</Label>
                     <Input type="date" />
@@ -90,14 +100,14 @@ export default function Relatorios({ userRole = 'professor' }: RelatoriosProps) 
                 </div>
               </CardContent>
             </Card>
-            
+
             <Tabs defaultValue="comportamental">
               <TabsList className="grid w-full grid-cols-2 lg:grid-cols-3">
                 <TabsTrigger value="comportamental">Comportamental</TabsTrigger>
                 <TabsTrigger value="simulados">Simulados</TabsTrigger>
                 <TabsTrigger value="consolidado">Consolidado</TabsTrigger>
               </TabsList>
-              
+
               <TabsContent value="comportamental" className="space-y-4 mt-6">
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                   <Card>
@@ -110,7 +120,7 @@ export default function Relatorios({ userRole = 'professor' }: RelatoriosProps) 
                       <p className="text-xs text-muted-foreground">+0.3 vs mês anterior</p>
                     </CardContent>
                   </Card>
-                  
+
                   <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <CardTitle className="text-sm font-medium">Assiduidade</CardTitle>
@@ -121,7 +131,7 @@ export default function Relatorios({ userRole = 'professor' }: RelatoriosProps) 
                       <p className="text-xs text-muted-foreground">Melhor critério</p>
                     </CardContent>
                   </Card>
-                  
+
                   <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <CardTitle className="text-sm font-medium">Participação</CardTitle>
@@ -132,7 +142,7 @@ export default function Relatorios({ userRole = 'professor' }: RelatoriosProps) 
                       <p className="text-xs text-muted-foreground">Em alta</p>
                     </CardContent>
                   </Card>
-                  
+
                   <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <CardTitle className="text-sm font-medium">Avaliações</CardTitle>
@@ -144,7 +154,7 @@ export default function Relatorios({ userRole = 'professor' }: RelatoriosProps) 
                     </CardContent>
                   </Card>
                 </div>
-                
+
                 <Card>
                   <CardHeader>
                     <CardTitle>Evolução dos Critérios Comportamentais</CardTitle>
@@ -157,7 +167,7 @@ export default function Relatorios({ userRole = 'professor' }: RelatoriosProps) 
                   </CardContent>
                 </Card>
               </TabsContent>
-              
+
               <TabsContent value="simulados" className="space-y-4 mt-6">
                 <Card>
                   <CardHeader>
@@ -171,7 +181,7 @@ export default function Relatorios({ userRole = 'professor' }: RelatoriosProps) 
                   </CardContent>
                 </Card>
               </TabsContent>
-              
+
               <TabsContent value="consolidado" className="space-y-4 mt-6">
                 <Card>
                   <CardHeader>
