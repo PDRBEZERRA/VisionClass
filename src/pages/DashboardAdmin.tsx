@@ -23,7 +23,7 @@ const DashboardAdmin = () => {
   const chartConfig = {
     users: {
       label: 'Novos Usuários',
-      color: 'hsl(var(--chart-1))',
+      color: 'hsl(var(--primary))',
     },
   };
 
@@ -99,7 +99,7 @@ const DashboardAdmin = () => {
                         <XAxis dataKey="month" tickLine={false} tickMargin={10} axisLine={false} />
                         <YAxis />
                         <ChartTooltip content={<ChartTooltipContent />} />
-                        <Bar dataKey="users" fill="var(--color-users)" radius={4} />
+                        <Bar dataKey="users" fill={chartConfig.users.color} radius={4} />
                       </BarChart>
                     </ResponsiveContainer>
                   </ChartContainer>
