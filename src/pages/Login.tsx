@@ -102,7 +102,7 @@ export default function Login() {
         </Card>
 
         <p className="text-center text-white/60 text-sm mt-6">
-          Dados de demonstração - Qualquer senha será aceita
+
         </p>
       </div>
     </div>
