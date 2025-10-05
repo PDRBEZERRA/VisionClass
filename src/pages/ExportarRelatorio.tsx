@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react'; // Adicionado useMemo
 import { useNavigate } from 'react-router-dom';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
@@ -7,18 +7,28 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { ArrowLeft, Download, FileText, BarChart, Users, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Download, FileText, BarChart, Users, CheckCircle, Search, UserCircle } from 'lucide-react'; // Adicionado Search e UserCircle
 import { UserRole } from '@/types';
 
 interface ExportarRelatorioProps {
   userRole: UserRole;
 }
 
+// Dados de Alunos mockados para a busca
+const mockAlunos = [
+    { id: '1', nome: 'Todos os Alunos', matricula: '0000', default: true },
+    { id: '101', nome: 'João da Silva', matricula: 'ALU101' },
+    { id: '102', nome: 'Maria Souza', matricula: 'ALU102' },
+    { id: '103', nome: 'Pedro Almeida', matricula: 'ALU103' },
+    { id: '104', nome: 'Ana Costa', matricula: 'ALU104' },
+    { id: '105', nome: 'Lucas Oliveira', matricula: 'ALU105' },
+    { id: '106', nome: 'Mariana Santos', matricula: 'ALU106' },
+];
+
 // Componente auxiliar para os cards de opções de exportação
 const ExportarRelatorioCard = ({ title, description, icon: Icon, format, onExport }: any) => (
   <Card className="hover-lift flex flex-col justify-between">
     <CardHeader className="p-4 flex flex-row items-center justify-between space-y-0 pb-2">
-      {/* Usando uma div para o ícone para um melhor controle visual */}
       <div className="flex items-center gap-3">
         <Icon className="h-6 w-6 text-primary" />
         <CardTitle className="text-lg m-0">{title}</CardTitle>
@@ -47,7 +57,6 @@ export default function ExportarRelatorio({ userRole = 'professor' }: ExportarRe
   const handleExport = (format: string) => {
     // Simulação da lógica de exportação. Em um app real, o back-end faria o processamento.
     console.log(`Exportando relatório como ${format}...`);
-    // Usando alert() como substituto temporário para um Toast ou Modal de progresso/sucesso.
     alert(`A solicitação de exportação para ${format} foi enviada! O arquivo será gerado em breve.`);
   };
 
@@ -55,7 +64,28 @@ export default function ExportarRelatorio({ userRole = 'professor' }: ExportarRe
 
   const [periodo, setPeriodo] = useState('mes');
   const [turma, setTurma] = useState('todas');
-  const [aluno, setAluno] = useState('todos'); // Novo estado para o aluno
+  const [alunoSelecionado, setAlunoSelecionado] = useState(mockAlunos[0]); // Padrão: Todos os Alunos
+  const [termoBusca, setTermoBusca] = useState('');
+  const [isSearching, setIsSearching] = useState(false); // Estado para controlar o Popover (janela de busca)
+
+  // Lógica de filtro para a busca de alunos
+  const alunosFiltrados = useMemo(() => {
+    if (!termoBusca) {
+        // Exibe uma pequena lista de sugestões ou todos
+        return mockAlunos.slice(0, 5);
+    }
+
+    const busca = termoBusca.toLowerCase();
+    return mockAlunos.filter(a =>
+        a.nome.toLowerCase().includes(busca) && !a.default
+    ).slice(0, 10); // Limita os resultados para melhor UX
+  }, [termoBusca]);
+
+  const handleSelectAluno = (aluno: typeof mockAlunos[0]) => {
+    setAlunoSelecionado(aluno);
+    setTermoBusca('');
+    setIsSearching(false);
+  };
 
   const exportOptions = [
     {
@@ -109,7 +139,6 @@ export default function ExportarRelatorio({ userRole = 'professor' }: ExportarRe
                 <CardDescription>Defina quais dados serão incluídos no arquivo exportado.</CardDescription>
               </CardHeader>
               <CardContent>
-                {/* O grid é sempre de 4 colunas em telas grandes (lg), mas os filtros internos controlam quais colunas aparecem */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   {/* Filtro de Período - SEMPRE PRESENTE */}
                   <div className="col-span-1">
@@ -144,21 +173,83 @@ export default function ExportarRelatorio({ userRole = 'professor' }: ExportarRe
                     </div>
                   )}
 
-                  {/* NOVO FILTRO: Aluno Específico - APENAS PROFESSOR/ADMIN */}
+                  {/* NOVO FILTRO: Aluno Específico com busca (Input + Popover de sugestões) */}
                   {isProfessor && (
-                    <div className="col-span-1">
-                      <Label htmlFor="export-aluno">Aluno Específico</Label>
-                      <Select value={aluno} onValueChange={setAluno}>
-                        <SelectTrigger id="export-aluno" className="h-10">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="todos">Todos os Alunos</SelectItem>
-                          <SelectItem value="1">João da Silva (Mat. 101)</SelectItem>
-                          <SelectItem value="2">Maria Souza (Mat. 102)</SelectItem>
-                          <SelectItem value="3">Pedro Almeida (Mat. 103)</SelectItem>
-                        </SelectContent>
-                      </Select>
+                    <div className="col-span-1 relative">
+                        <Label htmlFor="export-aluno-busca">Aluno Específico</Label>
+
+                        {/* Campo de Input que simula a busca */}
+                        <div className="relative">
+                            <Input
+                                id="export-aluno-busca"
+                                placeholder="Buscar aluno por nome ou matrícula..."
+                                className="h-10 pl-10"
+                                value={alunoSelecionado.default ? '' : alunoSelecionado.nome}
+                                onChange={(e) => {
+                                    setTermoBusca(e.target.value);
+                                    setAlunoSelecionado(mockAlunos[0]); // Desseleciona ao digitar
+                                    setIsSearching(true);
+                                }}
+                                onFocus={() => setIsSearching(true)}
+                                onBlur={() => setTimeout(() => setIsSearching(false), 200)}
+                            />
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                        </div>
+
+                        {/* Exibe o aluno selecionado ou "Todos os Alunos" */}
+                        <div
+                            className="mt-1 flex items-center gap-2 text-sm text-primary/80 font-medium cursor-pointer hover:underline w-fit"
+                            onClick={() => {
+                                // Se um aluno específico estiver selecionado, volta para "Todos os Alunos"
+                                if (!alunoSelecionado.default) {
+                                    setAlunoSelecionado(mockAlunos[0]);
+                                    setTermoBusca('');
+                                }
+                            }}
+                        >
+                            <UserCircle className="w-4 h-4 text-primary" />
+                            {alunoSelecionado.nome}
+                        </div>
+
+                        {/* Sugestões de Busca (Simulação de Popover/Dropdown) */}
+                        {isSearching && termoBusca.length > 1 && (
+                            <Card className="absolute z-10 w-full mt-1 max-h-60 overflow-y-auto">
+                                <CardContent className="p-1">
+                                    {alunosFiltrados.length > 0 ? (
+                                        alunosFiltrados.map((aluno) => (
+                                            <div
+                                                key={aluno.id}
+                                                className="flex items-center justify-between p-2 hover:bg-muted/50 rounded-md cursor-pointer"
+                                                onMouseDown={() => handleSelectAluno(aluno)} // Usar onMouseDown para evitar que onBlur feche antes do click
+                                            >
+                                                <div>
+                                                    <p className="text-sm font-medium">{aluno.nome}</p>
+                                                    <p className="text-xs text-muted-foreground">{aluno.matricula}</p>
+                                                </div>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <p className="p-2 text-sm text-muted-foreground text-center">Nenhum aluno encontrado.</p>
+                                    )}
+                                </CardContent>
+                            </Card>
+                        )}
+
+                        {/* Opção para reverter para "Todos os Alunos" se a busca estiver vazia */}
+                        {isSearching && termoBusca.length <= 1 && (
+                            <Card className="absolute z-10 w-full mt-1 max-h-60 overflow-y-auto">
+                                <CardContent className="p-1">
+                                    <div
+                                        className="flex items-center justify-between p-2 hover:bg-muted/50 rounded-md cursor-pointer font-medium text-primary"
+                                        onMouseDown={() => handleSelectAluno(mockAlunos[0])}
+                                    >
+                                        <UserCircle className="w-4 h-4 mr-2" />
+                                        {mockAlunos[0].nome}
+                                    </div>
+                                    <p className="p-2 text-sm text-muted-foreground">Continue digitando para buscar...</p>
+                                </CardContent>
+                            </Card>
+                        )}
                     </div>
                   )}
 
