@@ -1,23 +1,18 @@
 import { useState } from 'react';
-import { Sidebar } from '@/components/layout/Sidebar';
-import { Header } from '@/components/layout/Header';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { useNavigate } from 'react-router-dom';
+import { Sidebar } from '../components/layout/Sidebar';
+import { Header } from '../components/layout/Header';
+import { Button } from '../components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Badge } from '../components/ui/badge';
 import { Users, Calendar, BookOpen } from 'lucide-react';
-import { mockTurmas } from '@/lib/mockData';
-import { UserRole } from '@/types';
+import { mockTurmas } from '../lib/mockData';
+import { UserRole } from '../types';
 
-// A interface de props não é mais necessária aqui, mas pode ser mantida se você planeja reutilizar o componente de outras formas.
-// interface TurmasProps {
-//   userRole?: UserRole;
-// }
-
-// A prop userRole foi removida da assinatura da função.
 export default function Turmas() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navigate = useNavigate();
 
-  // A função do usuário agora é lida do localStorage.
   const userRole = localStorage.getItem('userRole') as UserRole || 'professor';
   const userName = userRole === 'admin' ? 'Admin Sistema' : 'Prof. João Silva';
 
@@ -28,7 +23,6 @@ export default function Turmas() {
         <Header userName={userName} onMenuClick={() => setSidebarOpen(true)} />
         <main className="flex-1 p-4 sm:p-6 lg:p-8">
           <div className="max-w-6xl mx-auto space-y-6">
-            {/* O título pode ser dinâmico também, se necessário */}
             <h1 className="text-2xl sm:text-3xl font-bold">
               {userRole === 'admin' ? 'Todas as Turmas' : 'Minhas Turmas'}
             </h1>
@@ -48,7 +42,7 @@ export default function Turmas() {
                       <Calendar className="w-4 h-4" />
                       <span>Ano: {turma.ano}</span>
                     </div>
-                    <Button className="w-full">
+                    <Button className="w-full" onClick={() => navigate(`/turma/${turma.id}`)}>
                       <BookOpen className="w-4 h-4 mr-2" />
                       Ver Turma
                     </Button>
@@ -62,3 +56,4 @@ export default function Turmas() {
     </div>
   );
 }
+

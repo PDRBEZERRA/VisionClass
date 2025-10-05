@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import DashboardAdmin from "./pages/DashboardAdmin";
 import DashboardProfessor from "./pages/DashboardProfessor";
@@ -17,6 +17,7 @@ import MeusSimulados from "./pages/MeusSimulados";
 import Desempenho from "./pages/Desempenho";
 import Perfil from "./pages/Perfil";
 import Turmas from "./pages/Turmas";
+import DetalhesTurma from "./pages/DetalhesTurma";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ const App = () => (
           <Route path="/dashboard/aluno" element={<DashboardAluno />} />
           <Route path="/carometro" element={<Carometro />} />
           <Route path="/turmas" element={<Turmas />} />
+          <Route path="/turma/:id" element={<DetalhesTurma />} />
           <Route path="/questoes" element={<BancoQuestoes />} />
           <Route path="/simulados" element={<Simulados />} />
           <Route path="/usuarios" element={<Usuarios />} />
