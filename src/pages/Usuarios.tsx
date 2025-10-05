@@ -1,22 +1,21 @@
 import { useState } from 'react';
-import { Sidebar } from '@/components/layout/Sidebar';
-import { Header } from '@/components/layout/Header';
+import { useNavigate } from 'react-router-dom';
+import { Sidebar } from '../components/layout/Sidebar';
+import { Header } from '../components/layout/Header';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Plus, Search, Edit, Trash2, UserCircle } from 'lucide-react';
-import { mockUsers } from '@/lib/mockData';
+import { mockUsers } from '../lib/mockData';
 
 export default function Usuarios() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [filtro, setFiltro] = useState('');
+  const navigate = useNavigate();
 
-  const usuariosFiltrados = mockUsers.filter(u => 
+  const usuariosFiltrados = mockUsers.filter(u =>
     u.nome.toLowerCase().includes(filtro.toLowerCase()) ||
     u.email.toLowerCase().includes(filtro.toLowerCase()) ||
     u.matricula.toLowerCase().includes(filtro.toLowerCase())
@@ -34,13 +33,13 @@ export default function Usuarios() {
   return (
     <div className="flex min-h-screen w-full bg-background">
       <Sidebar userRole="admin" open={sidebarOpen} onOpenChange={setSidebarOpen} />
-      
+
       <div className="flex-1 flex flex-col">
-        <Header 
-          userName="Admin Sistema" 
+        <Header
+          userName="Admin Sistema"
           onMenuClick={() => setSidebarOpen(true)}
         />
-        
+
         <main className="flex-1 p-4 sm:p-6 lg:p-8">
           <div className="max-w-7xl mx-auto space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -48,74 +47,13 @@ export default function Usuarios() {
                 <h1 className="text-2xl sm:text-3xl font-bold">Gerenciar Usuários</h1>
                 <p className="text-muted-foreground mt-1">Cadastre e gerencie todos os usuários do sistema</p>
               </div>
-              
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button className="w-full sm:w-auto">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Novo Usuário
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="max-w-2xl">
-                  <DialogHeader>
-                    <DialogTitle>Cadastrar Novo Usuário</DialogTitle>
-                  </DialogHeader>
-                  
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <Label>Nome Completo</Label>
-                        <Input placeholder="João da Silva" />
-                      </div>
-                      
-                      <div>
-                        <Label>CPF</Label>
-                        <Input placeholder="000.000.000-00" />
-                      </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <Label>Email</Label>
-                        <Input type="email" placeholder="usuario@escola.com" />
-                      </div>
-                      
-                      <div>
-                        <Label>Matrícula</Label>
-                        <Input placeholder="ALU001" />
-                      </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <Label>Tipo de Usuário</Label>
-                        <Select>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Selecione" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="aluno">Aluno</SelectItem>
-                            <SelectItem value="professor">Professor</SelectItem>
-                            <SelectItem value="admin">Administrador</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      
-                      <div>
-                        <Label>Senha Inicial</Label>
-                        <Input type="password" placeholder="••••••••" />
-                      </div>
-                    </div>
-                    
-                    <div className="flex gap-2 pt-4">
-                      <Button className="flex-1">Cadastrar</Button>
-                      <Button variant="outline" className="flex-1">Cancelar</Button>
-                    </div>
-                  </div>
-                </DialogContent>
-              </Dialog>
+
+              <Button className="w-full sm:w-auto" onClick={() => navigate('/usuarios/novo')}>
+                <Plus className="w-4 h-4 mr-2" />
+                Novo Usuário
+              </Button>
             </div>
-            
+
             <Card>
               <CardContent className="p-6">
                 <div className="mb-4">
@@ -129,7 +67,7 @@ export default function Usuarios() {
                     />
                   </div>
                 </div>
-                
+
                 <div className="overflow-x-auto">
                   <Table>
                     <TableHeader>
@@ -181,3 +119,4 @@ export default function Usuarios() {
     </div>
   );
 }
+
