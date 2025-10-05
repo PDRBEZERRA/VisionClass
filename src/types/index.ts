@@ -18,6 +18,7 @@ export interface Turma {
   periodo: string;
   professorId: string;
   alunosIds: string[];
+  desempenho?: number;
 }
 
 export interface Aluno {

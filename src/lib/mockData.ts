@@ -36,7 +36,8 @@ export const mockTurmas: Turma[] = [
     ano: '2025',
     periodo: 'Manhã',
     professorId: '2',
-    alunosIds: Array.from({ length: 40 }, (_, i) => `aluno-${i + 1}`)
+    alunosIds: Array.from({ length: 40 }, (_, i) => `aluno-${i + 1}`),
+    desempenho: 85,
   },
   {
     id: '2',
@@ -44,7 +45,8 @@ export const mockTurmas: Turma[] = [
     ano: '2025',
     periodo: 'Tarde',
     professorId: '2',
-    alunosIds: Array.from({ length: 35 }, (_, i) => `aluno-${i + 41}`)
+    alunosIds: Array.from({ length: 35 }, (_, i) => `aluno-${i + 41}`),
+    desempenho: 70,
   }
 ];
 
