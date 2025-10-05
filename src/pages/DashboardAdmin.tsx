@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
-import { Sidebar } from '../components/layout/Sidebar';
-import { Header } from '../components/layout/Header';
-import { Button } from '../components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Sidebar } from '@/components/layout/Sidebar';
+import { Header } from '@/components/layout/Header';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BarChart, Users, FolderPlus, UserPlus, TrendingUp } from 'lucide-react';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '../components/ui/chart';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
-import { mockTurmas, mockUsers } from '../lib/mockData';
+import { mockTurmas, mockUsers } from '@/lib/mockData';
 import { useState } from 'react';
 
 const DashboardAdmin = () => {
@@ -32,7 +32,7 @@ const DashboardAdmin = () => {
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
-      <Sidebar userType="admin" open={sidebarOpen} onOpenChange={setSidebarOpen} />
+      <Sidebar userRole="admin" open={sidebarOpen} onOpenChange={setSidebarOpen} />
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
         <Header userType="admin" userName="Admin" onMenuClick={() => setSidebarOpen(prev => !prev)} />
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
@@ -99,7 +99,7 @@ const DashboardAdmin = () => {
                         <XAxis dataKey="month" tickLine={false} tickMargin={10} axisLine={false} />
                         <YAxis />
                         <ChartTooltip content={<ChartTooltipContent />} />
-                        <Bar dataKey="users" fill={chartConfig.users.color} radius={4} />
+                        <Bar dataKey="users" fill="var(--color-users)" radius={4} />
                       </BarChart>
                     </ResponsiveContainer>
                   </ChartContainer>
