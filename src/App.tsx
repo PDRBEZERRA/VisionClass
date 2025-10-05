@@ -12,6 +12,7 @@ import BancoQuestoes from "@/pages/BancoQuestoes";
 import Simulados from "@/pages/Simulados";
 import Usuarios from "@/pages/Usuarios";
 import NovoUsuario from "@/pages/NovoUsuario"; // Importa a nova página
+import NovaTurma from "@/pages/NovaTurma";
 import Relatorios from "@/pages/Relatorios";
 import Configuracoes from "@/pages/Configuracoes";
 import MeusSimulados from "@/pages/MeusSimulados";
@@ -36,6 +37,7 @@ const App = () => (
           <Route path="/dashboard/aluno" element={<DashboardAluno />} />
           <Route path="/carometro" element={<Carometro />} />
           <Route path="/turmas" element={<Turmas />} />
+          <Route path="/turmas/novo" element={<NovaTurma />} />
           <Route path="/turma/:id" element={<DetalhesTurma />} />
           <Route path="/questoes" element={<BancoQuestoes />} />
           <Route path="/simulados" element={<Simulados />} />
