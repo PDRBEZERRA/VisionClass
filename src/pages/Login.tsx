@@ -35,7 +35,7 @@ export default function Login() {
           <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/10 backdrop-blur-sm mb-3 sm:mb-4">
             <GraduationCap className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">ERP Educacional</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">VisionClass</h1>
           <p className="text-sm sm:text-base text-white/80">Sistema de Gestão Escolar Completo</p>
         </div>
 
