@@ -15,7 +15,7 @@ import java.util.Optional;
 
 // Habilita a comunicação entre portas diferentes (Frontend React e Backend Java)
 // Configure o "origins" com a URL do seu frontend em desenvolvimento (geralmente 5173 ou 3000)
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api/usuarios") // URL base: http://localhost:8080/api/usuarios
 public class UsuarioController {
