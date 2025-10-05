@@ -8,12 +8,17 @@ import { Users, Calendar, BookOpen } from 'lucide-react';
 import { mockTurmas } from '@/lib/mockData';
 import { UserRole } from '@/types';
 
-interface TurmasProps {
-  userRole?: UserRole;
-}
+// A interface de props não é mais necessária aqui, mas pode ser mantida se você planeja reutilizar o componente de outras formas.
+// interface TurmasProps {
+//   userRole?: UserRole;
+// }
 
-export default function Turmas({ userRole = 'professor' }: TurmasProps) {
+// A prop userRole foi removida da assinatura da função.
+export default function Turmas() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // A função do usuário agora é lida do localStorage.
+  const userRole = localStorage.getItem('userRole') as UserRole || 'professor';
   const userName = userRole === 'admin' ? 'Admin Sistema' : 'Prof. João Silva';
 
   return (
@@ -23,7 +28,10 @@ export default function Turmas({ userRole = 'professor' }: TurmasProps) {
         <Header userName={userName} onMenuClick={() => setSidebarOpen(true)} />
         <main className="flex-1 p-4 sm:p-6 lg:p-8">
           <div className="max-w-6xl mx-auto space-y-6">
-            <h1 className="text-2xl sm:text-3xl font-bold">Minhas Turmas</h1>
+            {/* O título pode ser dinâmico também, se necessário */}
+            <h1 className="text-2xl sm:text-3xl font-bold">
+              {userRole === 'admin' ? 'Todas as Turmas' : 'Minhas Turmas'}
+            </h1>
             <div className="grid gap-4 sm:grid-cols-2">
               {mockTurmas.map((turma) => (
                 <Card key={turma.id}>
