@@ -108,7 +108,7 @@ export default function DashboardAdmin() {
                   </Link>
                 </Button>
                 <Button asChild variant="outline" className="h-20 sm:h-24 flex flex-col gap-2 text-sm sm:text-base">
-                   <Link to="/turmas">
+                   <Link to="/turmas/novo">
                     <FolderPlus className="w-5 h-5 sm:w-6 sm:h-6 text-secondary" />
                     <span className="text-xs sm:text-sm">Criar Turma</span>
                    </Link>
