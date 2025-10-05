@@ -1,19 +1,18 @@
-import { NavLink } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  Users, 
-  GraduationCap, 
-  BookOpen, 
-  FileText, 
-  BarChart3, 
+import { NavLink, useNavigate } from 'react-router-dom'; // 1. Importe o useNavigate
+import {
+  LayoutDashboard,
+  Users,
+  GraduationCap,
+  BookOpen,
+  FileText,
+  BarChart3,
   Settings,
   ClipboardList,
   UserCircle,
-  X
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { UserRole } from '@/types';
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface SidebarProps {
@@ -50,6 +49,14 @@ const menuItems = {
 export function Sidebar({ userRole, open = true, onOpenChange }: SidebarProps) {
   const items = menuItems[userRole];
   const isMobile = useIsMobile();
+  const navigate = useNavigate(); // 2. Inicialize o hook
+
+  // 3. Crie a função de logout
+  const handleLogout = () => {
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('userId');
+    navigate('/'); // Redireciona para a página de login
+  };
 
   const sidebarContent = (
     <>
@@ -83,7 +90,11 @@ export function Sidebar({ userRole, open = true, onOpenChange }: SidebarProps) {
       </nav>
 
       <div className="p-4 border-t border-border">
-        <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-destructive hover:bg-destructive/10 transition-all">
+        {/* 4. Adicione o onClick ao botão */}
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-destructive hover:bg-destructive/10 transition-all"
+        >
           <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
           </svg>
