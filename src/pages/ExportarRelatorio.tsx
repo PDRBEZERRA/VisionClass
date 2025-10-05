@@ -184,10 +184,15 @@ export default function ExportarRelatorio({ userRole = 'professor' }: ExportarRe
                                 id="export-aluno-busca"
                                 placeholder="Buscar aluno por nome ou matrícula..."
                                 className="h-10 pl-10"
-                                value={alunoSelecionado.default ? '' : alunoSelecionado.nome}
+                                // CORREÇÃO: O valor do input deve ser o termo de busca (termoBusca)
+                                // para permitir a digitação livre.
+                                value={termoBusca}
                                 onChange={(e) => {
                                     setTermoBusca(e.target.value);
-                                    setAlunoSelecionado(mockAlunos[0]); // Desseleciona ao digitar
+                                    // Manter a lógica de deselecionar o aluno ao começar a digitar,
+                                    // o que força o filtro a voltar para "Todos os Alunos"
+                                    // e a exibir as sugestões de busca.
+                                    setAlunoSelecionado(mockAlunos[0]);
                                     setIsSearching(true);
                                 }}
                                 onFocus={() => setIsSearching(true)}
@@ -203,6 +208,7 @@ export default function ExportarRelatorio({ userRole = 'professor' }: ExportarRe
                                 // Se um aluno específico estiver selecionado, volta para "Todos os Alunos"
                                 if (!alunoSelecionado.default) {
                                     setAlunoSelecionado(mockAlunos[0]);
+                                    // CORREÇÃO: Ao reverter a seleção, garante que o termo de busca também é limpo.
                                     setTermoBusca('');
                                 }
                             }}
