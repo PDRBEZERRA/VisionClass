@@ -193,8 +193,8 @@ export default function Configuracoes() {
               <TabsContent value="seguranca" className="space-y-4 mt-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Segurança e Backup</CardTitle>
-                    <CardDescription>Gerencie a segurança e backup de dados</CardDescription>
+                    <CardTitle>Segurança</CardTitle>
+                    <CardDescription>Gerencie a segurança de dados</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div>
