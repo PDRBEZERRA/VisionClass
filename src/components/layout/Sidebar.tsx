@@ -55,7 +55,7 @@ export function Sidebar({ userRole, open = true, onOpenChange }: SidebarProps) {
     <>
       <div className="p-6 border-b border-border">
         <h1 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-          ERP Educacional
+          VisionClass
         </h1>
         <p className="text-xs text-muted-foreground mt-1 capitalize">{userRole}</p>
       </div>
