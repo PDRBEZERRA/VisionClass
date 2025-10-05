@@ -71,7 +71,7 @@ export default function NovaTurma() {
                     <Select>
                       <SelectTrigger id="professor">
                         <SelectValue placeholder="Selecione um professor" />
-                      </SelectTrigger>
+                      </Trigger>
                       <SelectContent>
                         {mockUsers.filter(u => u.role === 'professor').map(prof => (
                           <SelectItem key={prof.id} value={prof.id}>{prof.nome}</SelectItem>
