@@ -220,10 +220,6 @@ export default function Configuracoes() {
                     </div>
                     
                     <div className="pt-4">
-                      <Button variant="outline" className="w-full sm:w-auto">
-                        <Database className="w-4 h-4 mr-2" />
-                        Fazer Backup Agora
-                      </Button>
                     </div>
                   </CardContent>
                 </Card>
