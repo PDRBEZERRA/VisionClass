@@ -68,7 +68,8 @@ export const mockAlunos: Aluno[] = Array.from({ length: 40 }, (_, i) => ({
   foto: `https://api.dicebear.com/7.x/avataaars/svg?seed=${i + 1}`,
   turmaId: '1',
   email: `aluno${i + 1}@escola.com`,
-  cpf: `${String(i + 1).padStart(3, '0')}.${String(i + 1).padStart(3, '0')}.${String(i + 1).padStart(3, '0')}-${String(i % 100).padStart(2, '0')}`
+  cpf: `${String(i + 1).padStart(3, '0')}.${String(i + 1).padStart(3, '0')}.${String(i + 1).padStart(3, '0')}-${String(i % 100).padStart(2, '0')}`,
+  desempenho: 40 + Math.floor(Math.random() * 60), // Valores entre 40 e 99
 }));
 
 export const questoes: Questao[] = [
@@ -129,3 +130,4 @@ export const mockDashboardStats: DashboardStats = {
   turmasAtivas: 18,
   simuladosAtivos: 5
 };
+

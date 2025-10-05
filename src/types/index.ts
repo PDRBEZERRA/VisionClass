@@ -29,6 +29,7 @@ export interface Aluno {
   turmaId: string;
   email: string;
   cpf: string;
+  desempenho?: number;
 }
 
 export interface AvaliacaoComportamental {
@@ -86,3 +87,4 @@ export interface DashboardStats {
   turmasAtivas: number;
   simuladosAtivos: number;
 }
+

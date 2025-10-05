@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Sidebar } from '@/components/layout/Sidebar';
-import { Header } from '@/components/layout/Header';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Sidebar } from '../components/layout/Sidebar';
+import { Header } from '../components/layout/Header';
+import { Button } from '../components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Badge } from '../components/ui/badge';
 import { Users, Calendar, BookOpen } from 'lucide-react';
-import { mockTurmas } from '@/lib/mockData';
-import { UserRole } from '@/types';
-import { Progress } from '@/components/ui/progress';
+import { mockTurmas } from '../lib/mockData';
+import { UserRole } from '../types';
+import { Progress } from '../components/ui/progress';
 
 export default function Turmas() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -16,6 +16,13 @@ export default function Turmas() {
 
   const userRole = localStorage.getItem('userRole') as UserRole || 'professor';
   const userName = userRole === 'admin' ? 'Admin Sistema' : 'Prof. João Silva';
+
+  const getPerformanceColor = (value: number | undefined) => {
+    if (value === undefined) return "bg-primary";
+    if (value < 60) return "bg-destructive"; // Vermelho
+    if (value < 80) return "bg-accent"; // Laranja
+    return "bg-secondary"; // Verde
+  };
 
   return (
     <div className="flex min-h-screen w-full bg-background">
@@ -54,7 +61,7 @@ export default function Turmas() {
                           <p className="text-sm font-medium">Desempenho da Turma</p>
                           <span className="text-sm font-bold text-primary">{turma.desempenho || 0}%</span>
                         </div>
-                        <Progress value={turma.desempenho || 0} className="h-2" />
+                        <Progress value={turma.desempenho || 0} className="h-2" indicatorClassName={getPerformanceColor(turma.desempenho)} />
                       </div>
                     </div>
 
