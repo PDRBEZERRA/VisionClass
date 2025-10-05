@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Sidebar } from '../components/layout/Sidebar';
-import { Header } from '../components/layout/Header';
+import { Sidebar } from '@/components/layout/Sidebar';
+import { Header } from '@/components/layout/Header';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -12,6 +12,10 @@ import { ArrowLeft } from 'lucide-react';
 export default function NovoUsuario() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    navigate(-1); // Navega para a página anterior no histórico
+  };
 
   return (
     <div className="flex min-h-screen w-full bg-background">
@@ -24,15 +28,15 @@ export default function NovoUsuario() {
         />
 
         <main className="flex-1 p-4 sm:p-6 lg:p-8">
-          <div className="max-w-3xl mx-auto space-y-6">
-            <Button variant="outline" size="sm" onClick={() => navigate(-1)}>
+          <div className="max-w-4xl mx-auto space-y-6">
+            <Button variant="outline" size="sm" onClick={handleGoBack}>
               <ArrowLeft className="w-4 h-4 mr-2" />
               Voltar
             </Button>
 
             <Card>
               <CardHeader>
-                <CardTitle>Cadastrar Novo Usuário</CardTitle>
+                <CardTitle className="text-2xl">Cadastrar Novo Usuário</CardTitle>
                 <CardDescription>Preencha os dados abaixo para criar um novo usuário no sistema.</CardDescription>
               </CardHeader>
               <CardContent>
@@ -42,30 +46,26 @@ export default function NovoUsuario() {
                       <Label htmlFor="nome">Nome Completo</Label>
                       <Input id="nome" placeholder="João da Silva" />
                     </div>
-
                     <div>
                       <Label htmlFor="cpf">CPF</Label>
                       <Input id="cpf" placeholder="000.000.000-00" />
                     </div>
                   </div>
-
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="email">Email</Label>
                       <Input id="email" type="email" placeholder="usuario@escola.com" />
                     </div>
-
                     <div>
                       <Label htmlFor="matricula">Matrícula</Label>
                       <Input id="matricula" placeholder="ALU001" />
                     </div>
                   </div>
-
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="tipo">Tipo de Usuário</Label>
+                      <Label htmlFor="tipoUsuario">Tipo de Usuário</Label>
                       <Select>
-                        <SelectTrigger id="tipo">
+                        <SelectTrigger id="tipoUsuario">
                           <SelectValue placeholder="Selecione" />
                         </SelectTrigger>
                         <SelectContent>
@@ -75,16 +75,16 @@ export default function NovoUsuario() {
                         </SelectContent>
                       </Select>
                     </div>
-
                     <div>
                       <Label htmlFor="senha">Senha Inicial</Label>
                       <Input id="senha" type="password" placeholder="••••••••" />
                     </div>
                   </div>
-
-                  <div className="flex gap-2 pt-4">
+                  <div className="flex flex-col sm:flex-row gap-2 pt-4">
                     <Button className="flex-1">Cadastrar Usuário</Button>
-                    <Button variant="outline" className="flex-1" onClick={() => navigate(-1)}>Cancelar</Button>
+                    <Button variant="outline" className="flex-1" onClick={handleGoBack}>
+                      Cancelar
+                    </Button>
                   </div>
                 </div>
               </CardContent>
