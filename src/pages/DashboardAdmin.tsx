@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // 1. Importe o useNavigate
 import { Sidebar } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,11 +10,10 @@ import { mockDashboardStats } from '@/lib/mockData';
 export default function DashboardAdmin() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const stats = mockDashboardStats;
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // 2. Inicialize o hook
 
-  // ATUALIZAÇÃO AQUI: A função agora navega para a URL com um parâmetro especial
-  const goToNovoUsuario = () => navigate('/usuarios?action=novo');
-
+  // 3. Crie funções para navegar para as páginas
+  const goToUsuarios = () => navigate('/usuarios');
   const goToTurmas = () => navigate('/turmas');
   const goToRelatorios = () => navigate('/relatorios/admin');
 
@@ -108,8 +107,8 @@ export default function DashboardAdmin() {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-                {/* ATUALIZAÇÃO AQUI: O onClick agora usa a nova função */}
-                <Button onClick={goToNovoUsuario} variant="outline" className="h-20 sm:h-24 flex flex-col gap-2 text-sm sm:text-base">
+                {/* 4. Adicione o onClick aos botões */}
+                <Button onClick={goToUsuarios} variant="outline" className="h-20 sm:h-24 flex flex-col gap-2 text-sm sm:text-base">
                   <UserPlus className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
                   <span className="text-xs sm:text-sm">Cadastrar Usuário</span>
                 </Button>
