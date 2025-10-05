@@ -55,6 +55,7 @@ export default function ExportarRelatorio({ userRole = 'professor' }: ExportarRe
 
   const [periodo, setPeriodo] = useState('mes');
   const [turma, setTurma] = useState('todas');
+  const [aluno, setAluno] = useState('todos'); // Novo estado para o aluno
 
   const exportOptions = [
     {
@@ -142,14 +143,32 @@ export default function ExportarRelatorio({ userRole = 'professor' }: ExportarRe
                     </div>
                   )}
 
-                  {/* Data Inicial */}
-                  <div>
+                  {/* NOVO FILTRO: Aluno Específico */}
+                  {isProfessor && (
+                    <div>
+                      <Label htmlFor="export-aluno">Aluno Específico</Label>
+                      <Select value={aluno} onValueChange={setAluno}>
+                        <SelectTrigger id="export-aluno" className="h-10">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="todos">Todos os Alunos</SelectItem>
+                          <SelectItem value="1">João da Silva (Mat. 101)</SelectItem>
+                          <SelectItem value="2">Maria Souza (Mat. 102)</SelectItem>
+                          <SelectItem value="3">Pedro Almeida (Mat. 103)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
+
+                  {/* Data Inicial (Ajustado para ocupar um espaço extra se houver menos filtros) */}
+                  <div className={isProfessor ? '' : 'sm:col-span-1'}>
                     <Label htmlFor="data-inicial">Data Inicial</Label>
                     <Input id="data-inicial" type="date" className="h-10" />
                   </div>
 
                   {/* Data Final */}
-                  <div>
+                  <div className={isProfessor ? '' : 'sm:col-span-1'}>
                     <Label htmlFor="data-final">Data Final</Label>
                     <Input id="data-final" type="date" className="h-10" />
                   </div>
