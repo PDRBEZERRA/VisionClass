@@ -32,7 +32,7 @@ const DashboardAdmin = () => {
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <Sidebar userType="admin" />
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-        <Header userType="admin" />
+        <Header userType="admin" userName="Admin" onMenuClick={() => {}} />
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
@@ -69,6 +69,16 @@ const DashboardAdmin = () => {
                 <CardContent>
                   <div className="text-2xl font-bold">1,234</div>
                   <p className="text-xs text-muted-foreground">+150 em relação à semana passada</p>
+                </CardContent>
+              </Card>
+               <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Taxa de Engajamento</CardTitle>
+                  <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">78%</div>
+                  <p className="text-xs text-muted-foreground">+5% em relação à semana passada</p>
                 </CardContent>
               </Card>
             </div>
