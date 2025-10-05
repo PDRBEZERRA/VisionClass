@@ -15,5 +15,5 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  base: mode === 'production' ? '/VisionClass/' : '/'
+  base: process.env.VITE_BASE_URL || '/'
 }));
