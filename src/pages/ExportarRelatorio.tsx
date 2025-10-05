@@ -109,9 +109,10 @@ export default function ExportarRelatorio({ userRole = 'professor' }: ExportarRe
                 <CardDescription>Defina quais dados serão incluídos no arquivo exportado.</CardDescription>
               </CardHeader>
               <CardContent>
+                {/* O grid é sempre de 4 colunas em telas grandes (lg), mas os filtros internos controlam quais colunas aparecem */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {/* Filtro de Período */}
-                  <div>
+                  {/* Filtro de Período - SEMPRE PRESENTE */}
+                  <div className="col-span-1">
                     <Label htmlFor="export-periodo">Período</Label>
                     <Select value={periodo} onValueChange={setPeriodo}>
                       <SelectTrigger id="export-periodo" className="h-10">
@@ -126,9 +127,9 @@ export default function ExportarRelatorio({ userRole = 'professor' }: ExportarRe
                     </Select>
                   </div>
 
-                  {/* Filtro de Turma */}
+                  {/* Filtro de Turma - APENAS PROFESSOR/ADMIN */}
                   {isProfessor && (
-                    <div>
+                    <div className="col-span-1">
                       <Label htmlFor="export-turma">Turma</Label>
                       <Select value={turma} onValueChange={setTurma}>
                         <SelectTrigger id="export-turma" className="h-10">
@@ -143,9 +144,9 @@ export default function ExportarRelatorio({ userRole = 'professor' }: ExportarRe
                     </div>
                   )}
 
-                  {/* NOVO FILTRO: Aluno Específico */}
+                  {/* NOVO FILTRO: Aluno Específico - APENAS PROFESSOR/ADMIN */}
                   {isProfessor && (
-                    <div>
+                    <div className="col-span-1">
                       <Label htmlFor="export-aluno">Aluno Específico</Label>
                       <Select value={aluno} onValueChange={setAluno}>
                         <SelectTrigger id="export-aluno" className="h-10">
@@ -161,21 +162,21 @@ export default function ExportarRelatorio({ userRole = 'professor' }: ExportarRe
                     </div>
                   )}
 
-                  {/* Data Inicial (Ajustado para ocupar um espaço extra se houver menos filtros) */}
-                  <div className={isProfessor ? '' : 'sm:col-span-1'}>
+                  {/* Data Inicial */}
+                  <div className="col-span-1">
                     <Label htmlFor="data-inicial">Data Inicial</Label>
                     <Input id="data-inicial" type="date" className="h-10" />
                   </div>
 
                   {/* Data Final */}
-                  <div className={isProfessor ? '' : 'sm:col-span-1'}>
+                  <div className="col-span-1">
                     <Label htmlFor="data-final">Data Final</Label>
                     <Input id="data-final" type="date" className="h-10" />
                   </div>
 
-                  {/* Tipo de Relatório (Apenas se for professor ou admin) */}
+                  {/* Tipo de Relatório (Ajustado para ocupar 2 colunas se necessário, e 1 coluna em telas menores) */}
                   {isProfessor && (
-                    <div className="sm:col-span-2">
+                    <div className="col-span-1 sm:col-span-2 lg:col-span-2">
                         <Label htmlFor="tipo-relatorio">Conteúdo do Relatório</Label>
                         <Select defaultValue="consolidado">
                           <SelectTrigger id="tipo-relatorio" className="h-10">
@@ -191,7 +192,7 @@ export default function ExportarRelatorio({ userRole = 'professor' }: ExportarRe
                   )}
 
                   {/* Botão de Aplicar Filtros/Preparo */}
-                  <div className="flex items-end lg:col-span-1 sm:col-span-1">
+                  <div className="flex items-end col-span-1 sm:col-span-2 lg:col-span-1">
                     <Button variant="secondary" className="w-full h-10">
                       <CheckCircle className="w-4 h-4 mr-2" />
                       Preparar Dados
