@@ -33,11 +33,12 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Copy .nojekyll to dist
-        run: cp .nojekyll dist/
-
-      - name: Create 404.html for GitHub Pages SPA routing
+      # Adiciona a cópia do index.html para 404.html
+      - name: Copy index.html to 404.html
         run: cp dist/index.html dist/404.html
+
+      - name: Copy .nojekyll to dist
+        run: touch dist/.nojekyll
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
