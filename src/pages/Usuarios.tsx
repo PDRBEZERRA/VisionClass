@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Sidebar } from '../components/layout/Sidebar';
-import { Header } from '../components/layout/Header';
+import { Sidebar } from '@/components/layout/Sidebar';
+import { Header } from '@/components/layout/Header';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Plus, Search, Edit, Trash2, UserCircle } from 'lucide-react';
-import { mockUsers } from '../lib/mockData';
+import { mockUsers } from '@/lib/mockData';
 
 export default function Usuarios() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -98,7 +98,7 @@ export default function Usuarios() {
                           <TableCell>{getRoleBadge(usuario.role)}</TableCell>
                           <TableCell className="text-right">
                             <div className="flex justify-end gap-2">
-                              <Button variant="ghost" size="sm">
+                              <Button variant="ghost" size="sm" onClick={() => navigate(`/usuarios/editar/${usuario.id}`)}>
                                 <Edit className="w-4 h-4" />
                               </Button>
                               <Button variant="ghost" size="sm">
