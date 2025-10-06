@@ -7,84 +7,24 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { GraduationCap } from 'lucide-react';
 import { UserRole } from '@/types';
-// import { mockUsers } from '@/lib/mockData'; // REMOVIDO: Não é mais necessário
-import { toast } from 'sonner'; // ADICIONADO: Para notificações
-
-// Interface de resposta do backend Java
-interface LoginResponse {
-  id: number;
-  nome: string;
-  email: string;
-  tipoUsuario: string;
-}
-
+import { mockUsers } from '@/lib/mockData';
 
 export default function Login() {
-  // O campo matricula/CPF será enviado como 'email' para a API Java.
-  const [emailOrMatricula, setEmailOrMatricula] = useState('');
+  const [matricula, setMatricula] = useState('');
   const [senha, setSenha] = useState('');
   const [tipoUsuario, setTipoUsuario] = useState<UserRole>('aluno');
   const navigate = useNavigate();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Removida a lógica de mock
-
-    const API_URL = "http://localhost:8080/api/usuarios/login";
-
-    // O body deve corresponder ao DTO LoginRequest.java (email e senha)
-    const loginData = {
-        email: emailOrMatricula,
-        senha: senha,
-    };
-
-    try {
-        const response = await fetch(API_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(loginData),
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            // Falha na autenticação (401 Unauthorized, 400 Bad Request, etc.)
-            const errorMessage = data.mensagem || "Credenciais inválidas ou erro desconhecido.";
-            toast.error("Falha no Login", { description: errorMessage });
-            return;
-        }
-
-        // Sucesso (200 OK)
-        const userData: LoginResponse = data;
-
-        // Embora o tipo de usuário seja selecionado no front,
-        // a validação final do papel deve vir do backend (userData.tipoUsuario)
-        if (userData.tipoUsuario.toLowerCase() !== tipoUsuario) {
-             toast.error("Acesso Negado", {
-                 description: `O usuário ${userData.email} não tem o papel de ${tipoUsuario.toUpperCase()}.`
-             });
-             return;
-        }
-
-
-        // Salva os dados do usuário no armazenamento local
-        localStorage.setItem('user', JSON.stringify(userData));
-        localStorage.setItem('userRole', userData.tipoUsuario.toLowerCase());
-        localStorage.setItem('userId', userData.id.toString());
-
-        toast.success("Login realizado com sucesso!");
-
-        // Redireciona com base no papel retornado pelo backend
-        navigate(`/dashboard/${userData.tipoUsuario.toLowerCase()}`);
-
-    } catch (error) {
-        console.error("Erro de Conexão com a API:", error);
-        toast.error("Erro de Conexão", {
-            description: "Não foi possível conectar ao servidor. Verifique se o backend Java está rodando na porta 8080."
-        });
+    
+    // Mock validation
+    const user = mockUsers.find(u => u.role === tipoUsuario);
+    
+    if (user) {
+      localStorage.setItem('userRole', tipoUsuario);
+      localStorage.setItem('userId', user.id);
+      navigate(`/dashboard/${tipoUsuario}`);
     }
   };
 
@@ -123,12 +63,12 @@ export default function Login() {
               </div>
 
               <div className="space-y-1.5 sm:space-y-2">
-                <Label htmlFor="matricula" className="text-sm">Matrícula ou E-mail</Label>
+                <Label htmlFor="matricula" className="text-sm">Matrícula ou CPF</Label>
                 <Input
                   id="matricula"
-                  placeholder="Digite seu e-mail ou matrícula"
-                  value={emailOrMatricula}
-                  onChange={(e) => setEmailOrMatricula(e.target.value)}
+                  placeholder="Digite sua matrícula"
+                  value={matricula}
+                  onChange={(e) => setMatricula(e.target.value)}
                   required
                   className="h-10 sm:h-11 text-sm sm:text-base"
                 />
