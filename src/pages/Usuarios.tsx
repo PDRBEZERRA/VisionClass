@@ -3,40 +3,54 @@ import { useNavigate } from 'react-router-dom';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Plus, Search, Edit, Trash2, UserCircle } from 'lucide-react';
-import { mockUsers } from '@/lib/mockData';
+import { Badge } from '@/components/ui/badge';
+import { UserRole } from '@/types';
+import { Plus, Search, Edit, Eye, Trash2, ArrowLeftRight } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 
-export default function Usuarios() {
+interface UsuariosProps {
+  userRole?: UserRole; // Adicionando userRole como opcional, padrão para 'admin'
+}
+
+// Mock de dados para a tabela
+const mockUsers = [
+  { id: '101', nome: 'João da Silva', email: 'joao@escola.com', tipo: 'Aluno', turma: '3º A' },
+  { id: '102', nome: 'Maria Souza', email: 'maria@escola.com', tipo: 'Aluno', turma: '3º A' },
+  { id: '201', nome: 'Prof. Ana Lima', email: 'ana@escola.com', tipo: 'Professor', turma: 'N/A' },
+  { id: '301', nome: 'Admin Sistema', email: 'admin@escola.com', tipo: 'Administrador', turma: 'N/A' },
+];
+
+const getRoleColor = (role: string) => {
+  switch (role) {
+    case 'Aluno': return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
+    case 'Professor': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
+    case 'Administrador': return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
+    default: return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+  }
+};
+
+export default function Usuarios({ userRole = 'admin' }: UsuariosProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [filtro, setFiltro] = useState('');
   const navigate = useNavigate();
+  const userName = userRole === 'admin' ? 'Admin Sistema' : 'Prof. João Silva';
 
-  const usuariosFiltrados = mockUsers.filter(u =>
-    u.nome.toLowerCase().includes(filtro.toLowerCase()) ||
-    u.email.toLowerCase().includes(filtro.toLowerCase()) ||
-    u.matricula.toLowerCase().includes(filtro.toLowerCase())
-  );
+  const handleNovoUsuario = () => navigate('/usuarios/novo');
+  const handleEditarUsuario = (id: string) => navigate(`/usuarios/editar/${id}`);
 
-  const getRoleBadge = (role: string) => {
-    const colors = {
-      admin: 'destructive',
-      professor: 'default',
-      aluno: 'secondary'
-    } as const;
-    return <Badge variant={colors[role as keyof typeof colors]}>{role}</Badge>;
+  // NOVA FUNÇÃO: Navegar para a página de desempenho do aluno
+  const handleVerDesempenho = (alunoId: string) => {
+    navigate(`/desempenho/aluno/${alunoId}`);
   };
 
   return (
     <div className="flex min-h-screen w-full bg-background">
-      <Sidebar userRole="admin" open={sidebarOpen} onOpenChange={setSidebarOpen} />
+      <Sidebar userRole={userRole} open={sidebarOpen} onOpenChange={setSidebarOpen} />
 
       <div className="flex-1 flex flex-col">
         <Header
-          userName="Admin Sistema"
+          userName={userName}
           onMenuClick={() => setSidebarOpen(true)}
         />
 
@@ -44,67 +58,65 @@ export default function Usuarios() {
           <div className="max-w-7xl mx-auto space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
-                <h1 className="text-2xl sm:text-3xl font-bold">Gerenciar Usuários</h1>
-                <p className="text-muted-foreground mt-1">Cadastre e gerencie todos os usuários do sistema</p>
+                <h1 className="text-2xl sm:text-3xl font-bold">Gerenciamento de Usuários</h1>
+                <p className="text-muted-foreground mt-1">Lista completa de administradores, professores e alunos.</p>
               </div>
 
-              <Button className="w-full sm:w-auto" onClick={() => navigate('/usuarios/novo')}>
+              <Button onClick={handleNovoUsuario} className="btn-primary-gradient">
                 <Plus className="w-4 h-4 mr-2" />
                 Novo Usuário
               </Button>
             </div>
 
             <Card>
-              <CardContent className="p-6">
-                <div className="mb-4">
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <Input
-                      placeholder="Buscar por nome, email ou matrícula..."
-                      className="pl-10"
-                      value={filtro}
-                      onChange={(e) => setFiltro(e.target.value)}
-                    />
-                  </div>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle>Lista de Usuários</CardTitle>
+                <div className="relative w-full max-w-sm">
+                  <Input type="text" placeholder="Buscar por nome ou email..." className="pl-10" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 </div>
-
+              </CardHeader>
+              <CardContent>
                 <div className="overflow-x-auto">
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Usuário</TableHead>
-                        <TableHead>Matrícula</TableHead>
-                        <TableHead>Email</TableHead>
+                        <TableHead>Nome</TableHead>
+                        <TableHead>E-mail</TableHead>
                         <TableHead>Tipo</TableHead>
+                        <TableHead>Turma</TableHead>
                         <TableHead className="text-right">Ações</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {usuariosFiltrados.map((usuario) => (
-                        <TableRow key={usuario.id}>
+                      {mockUsers.map((user) => (
+                        <TableRow key={user.id}>
+                          <TableCell className="font-medium">{user.nome}</TableCell>
+                          <TableCell>{user.email}</TableCell>
                           <TableCell>
-                            <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center text-white">
-                                <UserCircle className="w-6 h-6" />
-                              </div>
-                              <div>
-                                <p className="font-medium">{usuario.nome}</p>
-                                <p className="text-sm text-muted-foreground">{usuario.cpf}</p>
-                              </div>
-                            </div>
+                            <Badge className={getRoleColor(user.tipo)} variant="secondary">
+                              {user.tipo}
+                            </Badge>
                           </TableCell>
-                          <TableCell>{usuario.matricula}</TableCell>
-                          <TableCell>{usuario.email}</TableCell>
-                          <TableCell>{getRoleBadge(usuario.role)}</TableCell>
-                          <TableCell className="text-right">
-                            <div className="flex justify-end gap-2">
-                              <Button variant="ghost" size="sm" onClick={() => navigate(`/usuarios/editar/${usuario.id}`)}>
-                                <Edit className="w-4 h-4" />
+                          <TableCell>{user.turma}</TableCell>
+                          <TableCell className="text-right space-x-2 flex justify-end">
+                            {user.tipo === 'Aluno' && (
+                              // NOVO BOTÃO: Ver Desempenho
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleVerDesempenho(user.id)}
+                              >
+                                <Eye className="w-4 h-4 mr-2" />
+                                Desempenho
                               </Button>
-                              <Button variant="ghost" size="sm">
-                                <Trash2 className="w-4 h-4 text-destructive" />
-                              </Button>
-                            </div>
+                            )}
+                            <Button variant="ghost" size="sm" onClick={() => handleEditarUsuario(user.id)}>
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                            <Button variant="ghost" size="sm" className="text-red-500 hover:text-red-600">
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
                           </TableCell>
                         </TableRow>
                       ))}
@@ -119,4 +131,3 @@ export default function Usuarios() {
     </div>
   );
 }
-
