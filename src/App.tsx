@@ -15,10 +15,11 @@ import NovoUsuario from "@/pages/NovoUsuario";
 import EditarUsuario from "@/pages/EditarUsuario";
 import NovaTurma from "@/pages/NovaTurma";
 import Relatorios from "@/pages/Relatorios";
-import ExportarRelatorio from "@/pages/ExportarRelatorio"; // Importar novo componente
+import ExportarRelatorio from "@/pages/ExportarRelatorio";
 import Configuracoes from "@/pages/Configuracoes";
 import MeusSimulados from "@/pages/MeusSimulados";
 import Desempenho from "@/pages/Desempenho";
+import DetalhesDesempenhoAluno from "@/pages/DetalhesDesempenhoAluno"; // LINHA CORRIGIDA: Importando o novo componente
 import Perfil from "@/pages/Perfil";
 import Turmas from "@/pages/Turmas";
 import DetalhesTurma from "@/pages/DetalhesTurma";
@@ -47,20 +48,19 @@ const App = () => (
           <Route path="/usuarios/novo" element={<NovoUsuario />} />
           <Route path="/usuarios/editar/:id" element={<EditarUsuario />} />
 
-          {/* Rotas de Relatórios existentes */}
+          {/* Rotas de Relatórios */}
           <Route path="/relatorios" element={<Relatorios userRole="professor" />} />
           <Route path="/relatorios/admin" element={<Relatorios userRole="admin" />} />
-
-          {/* NOVAS Rotas de Exportação */}
-          {/* Professor */}
           <Route path="/relatorios/exportar" element={<ExportarRelatorio userRole="professor" />} />
-          {/* Admin */}
           <Route path="/relatorios/admin/exportar" element={<ExportarRelatorio userRole="admin" />} />
 
           <Route path="/configuracoes" element={<Configuracoes />} />
           <Route path="/meus-simulados" element={<MeusSimulados />} />
           <Route path="/desempenho" element={<Desempenho />} />
+
+          {/* NOVA ROTA DE DESEMPENHO INDIVIDUAL */}
           <Route path="/desempenho/aluno/:alunoId" element={<DetalhesDesempenhoAluno userRole="professor" />} />
+
           <Route path="/perfil/aluno" element={<Perfil userRole="aluno" />} />
           <Route path="/perfil/professor" element={<Perfil userRole="professor" />} />
           <Route path="*" element={<NotFound />} />
